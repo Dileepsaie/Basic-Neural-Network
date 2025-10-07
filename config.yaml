@@ -2,9 +2,16 @@
 
 # Document Storage Configuration
 document_storage:
-  type: "local"  # local, s3, or database
-  path: "./data/documents"
-  supported_formats: ["pdf", "xlsx", "csv", "txt"]
+  type: "azure_blob"  # local, azure_blob, or database
+  path: "./data/documents"  # fallback for local
+  supported_formats: ["pdf", "xlsx", "csv", "txt", "json"]
+  
+  # Azure Blob Storage Configuration
+  azure_blob:
+    storage_account_name: "${AZURE_STORAGE_ACCOUNT_NAME}"
+    container_name: "financial-documents"
+    use_managed_identity: true  # Use Managed Identity or SAS token
+    connection_string: "${AZURE_STORAGE_CONNECTION_STRING}"  # Alternative to managed identity
 
 # LLM Configuration
 llm:
@@ -32,8 +39,34 @@ workflows:
     variance_threshold: 0.10  # 10% variance triggers alert
     anomaly_detection: true
 
+# Azure SQL Configuration
+azure_sql:
+  enabled: true
+  server: "${AZURE_SQL_SERVER}"
+  database: "${AZURE_SQL_DATABASE}"
+  use_managed_identity: true
+  connection_string: "${AZURE_SQL_CONNECTION_STRING}"
+
+# Azure Synapse Configuration
+azure_synapse:
+  enabled: true
+  workspace_name: "${AZURE_SYNAPSE_WORKSPACE}"
+  sql_pool: "${AZURE_SYNAPSE_SQL_POOL}"
+  use_managed_identity: true
+  connection_string: "${AZURE_SYNAPSE_CONNECTION_STRING}"
+
+# PowerApps Dataverse Configuration
+dataverse:
+  enabled: true
+  environment_url: "${DATAVERSE_ENVIRONMENT_URL}"
+  client_id: "${DATAVERSE_CLIENT_ID}"
+  client_secret: "${DATAVERSE_CLIENT_SECRET}"
+  tenant_id: "${AZURE_TENANT_ID}"
+
 # Output Configuration
 output:
   format: "json"  # json, csv, or pdf
   save_path: "./data/output"
+  save_to_blob: true
+  output_container: "financial-reports"
   include_visualizations: true
