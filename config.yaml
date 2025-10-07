@@ -1,0 +1,39 @@
+# Financial Data Processing Pipeline Configuration
+
+# Document Storage Configuration
+document_storage:
+  type: "local"  # local, s3, or database
+  path: "./data/documents"
+  supported_formats: ["pdf", "xlsx", "csv", "txt"]
+
+# LLM Configuration
+llm:
+  provider: "openai"
+  model: "gpt-4"
+  temperature: 0.3
+  max_tokens: 2000
+
+# Workflow Configuration
+workflows:
+  document_retrieval:
+    enabled: true
+    max_documents: 100
+    preprocessing:
+      remove_noise: true
+      extract_tables: true
+  
+  financial_summarization:
+    enabled: true
+    summary_length: "concise"  # concise, detailed, or comprehensive
+    include_metrics: true
+  
+  budget_insights:
+    enabled: true
+    variance_threshold: 0.10  # 10% variance triggers alert
+    anomaly_detection: true
+
+# Output Configuration
+output:
+  format: "json"  # json, csv, or pdf
+  save_path: "./data/output"
+  include_visualizations: true
